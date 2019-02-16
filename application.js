@@ -9,7 +9,7 @@ const applicationContext = {
   env: process.env.SERVICE_ENV || 'local',
   db: {
     host: process.env.DB_HOST || `https://nintex.documents.azure.com:443/`,
-    authKey: process.env.AUTH_KEY || `9qgrTNQ669weXWeD7tekUPhqAOakmxexsXz52ROeEelE3QUV9VhtZMkxFIDCSmLS4vxJzSwA4Hrqi5wdXY7M0A==`,
+    authKey: process.env.AUTH_KEY || `XXXXXXXXXXXXXXXXXXXXX`,
     database: 'nintexdb',
     collection: 'shorturl'
   },
