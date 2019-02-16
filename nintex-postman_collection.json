@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "4396f832-15b1-4140-b41c-c386ddc143d8",
+		"name": "Smoke test Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "24a7ea79-6a32-432a-9872-0f493d53e71c",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let message = jsonData.message;",
+							"let version = jsonData.version;",
+							"",
+							"pm.test(\"message\", function () {",
+							"    message === \"server running\";",
+							"});",
+							"",
+							"pm.test(\"version\", function () {",
+							"     version === '0.0.1';",
+							"});",
+							"",
+							"pm.environment.set(\"now\", Date.now());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://shortenurl.037c42ab07194cc7a7e1.australiaeast.aksapp.io/api/st/heartbeat",
+					"protocol": "http",
+					"host": [
+						"shortenurl",
+						"037c42ab07194cc7a7e1",
+						"australiaeast",
+						"aksapp",
+						"io"
+					],
+					"path": [
+						"api",
+						"st",
+						"heartbeat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404-get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0e74693d-b94c-4128-996f-f0b11c4d09bf",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let errors = jsonData.errors;",
+							"",
+							"pm.test(\"errors length 1\", function () {",
+							"    errors.length === 1;",
+							"});",
+							"",
+							"pm.test(\"errors message\", function () {",
+							"    errors[0].message === \"Record not found for 123456\";",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://shortenurl.037c42ab07194cc7a7e1.australiaeast.aksapp.io/api/st/123456",
+					"protocol": "http",
+					"host": [
+						"shortenurl",
+						"037c42ab07194cc7a7e1",
+						"australiaeast",
+						"aksapp",
+						"io"
+					],
+					"path": [
+						"api",
+						"st",
+						"123456"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post-url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e5113f5a-f828-44e2-9c37-cabfdec8e933",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let id = jsonData.id",
+							"pm.environment.set(\"id\", id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"url\": \"http://google.com/{{now}}\" \n}"
+				},
+				"url": {
+					"raw": "http://shortenurl.037c42ab07194cc7a7e1.australiaeast.aksapp.io/api/st",
+					"protocol": "http",
+					"host": [
+						"shortenurl",
+						"037c42ab07194cc7a7e1",
+						"australiaeast",
+						"aksapp",
+						"io"
+					],
+					"path": [
+						"api",
+						"st"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 - get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0e74693d-b94c-4128-996f-f0b11c4d09bf",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"let url = jsonData.url;",
+							"",
+							"pm.test(\"url should be\", function () {",
+							"    url === \"http://google.com/\" + pm.environment.get(\"now\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://shortenurl.037c42ab07194cc7a7e1.australiaeast.aksapp.io/api/st/{{id}}",
+					"protocol": "http",
+					"host": [
+						"shortenurl",
+						"037c42ab07194cc7a7e1",
+						"australiaeast",
+						"aksapp",
+						"io"
+					],
+					"path": [
+						"api",
+						"st",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

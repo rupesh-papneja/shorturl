@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortenurl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shortenurl
+  template:
+    metadata:
+      labels:
+        app: shortenurl
+    spec:
+      containers:
+      - name: shortenurl
+        image: prdocker/samples:shortenurl
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 8080
+          name: shortenurl
+        env:
+        - name: SERVICE_ENV
+          value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shortenurl
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: shortenurl

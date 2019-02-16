@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: shortenurl
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: shortenurl.037c42ab07194cc7a7e1.australiaeast.aksapp.io
+    http:
+      paths:
+      - path: /api/st
+        backend:
+          serviceName: shortenurl
+          servicePort: 8080
